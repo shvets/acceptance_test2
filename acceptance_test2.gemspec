@@ -3,7 +3,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/lib/acceptance_test/version')
 
 Gem::Specification.new do |spec|
-  spec.name          = "acceptance_test"
+  spec.name          = "acceptance_test2"
   spec.summary       = %q{Simplifies congiguration and run of acceptance tests.}
   spec.description   = %q{Description: simplifies congiguration and run of acceptance tests.}
   spec.email         = "alexander.shvets@gmail.com"
