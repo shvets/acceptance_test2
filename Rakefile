@@ -57,3 +57,5 @@ RSpec::Core::RakeTask.new('turnip') do |t|
   t.rspec_opts =  "--color -Ispec/support/features -r turnip/rspec"
 end
 
+# parallel_test -n 1 -e "rspec spec/unit/wikipedia_search_spec.rb"
+

@@ -21,13 +21,13 @@ class CapybaraHelper
       rescue LoadError
         @headless_mode = false
 
-        puts "Headless mode is not supported on this OS."
+        headless_mode_not_supported
       end
     end
 
     @video_mode = ENV['VIDEO'] ? true : false
 
-    @parallel_tests_mode = ENV['TEST_ENV_NUMBER'] ? true : false
+    #@parallel_tests_mode = ENV['TEST_ENV_NUMBER'] ? true : false
   end
 
   def before_test(app_host:, driver: DEFAULT_DRIVER, browser: DEFAULT_BROWSER, wait_time: DEFAULT_WAIT_TIME)
@@ -54,7 +54,7 @@ class CapybaraHelper
     if headless_mode
       headless_params = {}
       #headless_params[:display] = @parallel_tests_mode ? 100 + test_number : 1
-      headless_params[:reuse] = @parallel_tests_mode ? true : false
+      #headless_params[:reuse] = @parallel_tests_mode ? true : false
       headless_params[:dimensions] = "1280x900x24"
 
       headless_params[:video] = {
@@ -67,13 +67,19 @@ class CapybaraHelper
         log_file_path: STDERR
       } if video_mode
 
-      @headless = Headless.new headless_params
+      begin
+        @headless = Headless.new headless_params
 
-      @headless.start
+        @headless.start
 
-      #page.driver.browser.manage.window.resize_to(1280, 900)
+        #page.driver.browser.manage.window.resize_to(1280, 900)
 
-      @headless.video.start_capture if video_mode
+        @headless.video.start_capture if video_mode
+      rescue Headless::Exception
+        @headless_mode = false
+
+        headless_mode_not_supported
+      end
     end
 
     driver_name
@@ -91,25 +97,16 @@ class CapybaraHelper
     end
 
     if headless_mode
+      if exception
+        name = File.basename(metadata[:file_path])
 
-      #p metadata[:file_path]
-
-      #if exception
-        #File.basename(e.metadata[:file_path]
-
-        name = 'report'
-
-        @headless.video.stop_and_save "video_#{test_number}_#{name}.mp4" if video_mode
-      # else
-      #   @headless.video.stop_and_discard if video_mode
-      # end
+        @headless.video.stop_and_save error_video_name(name, exception) if video_mode
+      else
+        @headless.video.stop_and_discard if video_mode
+      end
 
       @headless.destroy
     end
-  end
-
-  def test_number
-    @parallel_tests_mode ? + ENV['TEST_ENV_NUMBER'].to_i : 1
   end
 
   def take_screenshot
@@ -119,6 +116,18 @@ class CapybaraHelper
   end
 
   private
+
+  def test_number
+    @parallel_tests_mode ? + ENV['TEST_ENV_NUMBER'].to_i : 1
+  end
+
+  def error_video_name name, exception
+    "#{name}_#{exception.name}.mp4"
+  end
+
+  def headless_mode_not_supported
+    puts "Headless mode is not supported on this OS."
+  end
 
   def register_driver driver:, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil
     driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url)
@@ -166,7 +175,7 @@ class CapybaraHelper
           when :chrome
             caps = Selenium::WebDriver::Remote::Capabilities.chrome
           else
-            ;
+            caps = nil
         end
 
         desired_capabilities =

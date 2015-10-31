@@ -5,6 +5,11 @@ group :development do
   gem "gemcutter"
 end
 
+group :default do
+  gem "parallel_tests", "~> 1.6"
+  gem "headless"
+end
+
 group :minitest, :default do
   gem "minitest", "~> 5.8.1"
   gem "minitest-capybara", "~> 0.7.2"

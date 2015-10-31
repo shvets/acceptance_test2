@@ -73,7 +73,7 @@ class RspecHelper
     end
   end
 
-  def after_test(metadata: metadata, exception: exception)
+  def after_test(metadata: nil, exception: nil)
     CapybaraHelper.instance.after_test metadata: metadata, exception: exception
 
     #   driver = driver(example.metadata)
