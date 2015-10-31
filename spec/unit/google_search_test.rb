@@ -15,7 +15,7 @@ class GoogleSearchTest < AcceptanceSpec
   end
 
   after do
-    CapybaraHelper.instance.after_test
+    CapybaraHelper.instance.after_test name: __name__.gsub(' ', '_')
   end
 
   it "finding the answer to the question of life", js: true do

@@ -85,7 +85,7 @@ class CapybaraHelper
     driver_name
   end
 
-  def after_test metadata: nil, exception: nil
+  def after_test name: nil, exception: nil
     Capybara.default_driver = @old_driver
     Capybara.current_driver = @old_driver
     Capybara.javascript_driver = @old_driver
@@ -97,12 +97,14 @@ class CapybaraHelper
     end
 
     if headless_mode
-      if exception
-        name = File.basename(metadata[:file_path])
-
-        @headless.video.stop_and_save error_video_name(name, exception) if video_mode
+      if video_mode
+        @headless.video.stop_and_save success_video_name(name)
       else
-        @headless.video.stop_and_discard if video_mode
+        if exception
+          @headless.video.stop_and_save error_video_name(name, exception)
+        else
+          @headless.video.stop_and_discard
+        end
       end
 
       @headless.destroy
@@ -122,7 +124,13 @@ class CapybaraHelper
   end
 
   def error_video_name name, exception
-    "#{name}_#{exception.name}.mp4"
+    exception_name = exception ? exception.name : 'exception'
+
+    "#{exception_name}_#{name}.mp4"
+  end
+
+  def success_video_name name
+    "#{name}.mp4"
   end
 
   def headless_mode_not_supported

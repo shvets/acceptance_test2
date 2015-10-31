@@ -74,7 +74,7 @@ class RspecHelper
   end
 
   def after_test(metadata: nil, exception: nil)
-    CapybaraHelper.instance.after_test metadata: metadata, exception: exception
+    CapybaraHelper.instance.after_test name: File.basename(metadata[:file_path]), exception: exception
 
     #   driver = driver(example.metadata)
     #
@@ -175,3 +175,4 @@ class RspecHelper
     # end
   end
 end
+

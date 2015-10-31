@@ -3,6 +3,7 @@
 $LOAD_PATH.unshift File.expand_path("lib", File.dirname(__FILE__))
 
 require "rspec/core/rake_task"
+require 'rake/testtask'
 require "acceptance_test/version"
 require "gemspec_deps_gen/gemspec_deps_gen"
 
@@ -30,8 +31,6 @@ end
 task :release => :build do
   system "gem push #{project_name}-#{version}.gem"
 end
-
-require 'rake/testtask'
 
 task :default => :test
 

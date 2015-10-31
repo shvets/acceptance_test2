@@ -6,8 +6,13 @@ group :development do
 end
 
 group :default do
+  gem 'thor', "~> 0.19"
+  gem "script_executor", "~> 1.7"
   gem "parallel_tests", "~> 1.6"
-  gem "headless"
+
+  if Gem::Platform.local.os.to_sym == :linux
+    gem "headless"
+  end
 end
 
 group :minitest, :default do

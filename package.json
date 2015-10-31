@@ -1,0 +1,20 @@
+{
+  "name": "acceptance-demo",
+  "version": "1.0.0",
+  "description": "npm package for acceptance-demo",
+  "author": "Alexander Shvets",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": ">= 0.10.32"
+  },
+  "devDependencies": {
+    "protractor": "~2.5.1"
+  },
+  "scripts": {
+    "webdriver-manager-update": "node_modules/.bin/webdriver-manager update --standalone",
+    "webdriver-manager-start": "node_modules/.bin/webdriver-manager start",
+    "protractor": "node_modules/.bin/protractor protractor.conf.js --suite angularDemo"
+  }
+}
