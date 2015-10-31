@@ -39,3 +39,33 @@ sudo apt-get install -y libav-tools
 # [firefox]
 
 sudo apt-get install -y firefox
+
+
+##############################
+# [imagemagick]
+
+sudo apt-get install -y imagemagick
+sudo apt-get install -y X11-apps
+
+
+##############################
+# [apache]
+
+sudo apt-get install -y apache2
+
+
+#######################################
+# [node]
+# Installs node
+
+sudo apt-get install -y node
+
+
+#######################################
+# [rbenv]
+# Installs node
+
+sudo apt-get install -y rbenv
+git clone git://github.com/jf/rbenv-gemset.git $HOME/.rbenv/plugins/rbenv-gemset
+
+

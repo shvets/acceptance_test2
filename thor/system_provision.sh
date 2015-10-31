@@ -3,12 +3,13 @@
 
 #######################################
 # [ubuntu_update]
+# Updates linux core packages
 
 sudo apt-get update
 
 
 #######################################
-# [prepare_linux]
+# [required_packages]
 # Updates linux core packages
 
 sudo apt-get update
@@ -35,42 +36,6 @@ sudo apt-get install -y bison
 sudo apt-get install -y pkg-config
 sudo apt-get install -y libffi-dev
 
-
-#######################################
-# [rvm]
-# Installs rvm
-
-curl -L https://get.rvm.io | bash
-
-#sudo chown -R vagrant /opt/vagrant_ruby
-
-
-#######################################
-# [ruby]
-# Installs ruby
-
-source /usr/local/rvm/scripts/rvm
-
-rvm install ruby-2.2.3
-
-
-#######################################
-# [node]
-# Installs node
-
-sudo apt-get install -y node
-
-
-#######################################
-# [rbenv]
-# Installs node
-
-sudo apt-get install -y rbenv
-git clone git://github.com/jf/rbenv-gemset.git $HOME/.rbenv/plugins/rbenv-gemset
-
-
-#######################################
-# [prepare]
 # to support nokogiri
 sudo apt-get install -y libgmp-dev
 
@@ -81,4 +46,31 @@ sudo apt-get install -y libqtwebkit-dev
 # to support headless
 sudo apt-get install -y xvfb
 
+
+#######################################
+# [gpg]
+# Installs gpg
+
+sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+
+
+#######################################
+# [rvm]
+# Installs rvm
+
+curl -sSL https://get.rvm.io | bash
+
+
+#######################################
+# [ruby]
+# Installs ruby
+
+/usr/local/rvm/bin/rvm install 2.2.3
+
+
+#######################################
+# [ch_rights]
+# Change rights for /usr/local
+
+sudo chown -R vagrant /usr/local
 

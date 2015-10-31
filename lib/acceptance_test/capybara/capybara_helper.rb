@@ -8,7 +8,7 @@ class CapybaraHelper
   DEFAULT_BROWSER = :chrome
   DEFAULT_WAIT_TIME = 2
 
-  attr_reader :headless_mode, :video_mode
+  attr_reader :headless_mode, :video_mode, :parallel_tests_mode
 
   def initialize
     Capybara.run_server = false
@@ -27,7 +27,7 @@ class CapybaraHelper
 
     @video_mode = ENV['VIDEO'] ? true : false
 
-    #@parallel_tests_mode = ENV['TEST_ENV_NUMBER'] ? true : false
+    @parallel_tests_mode = ENV['TEST_ENV_NUMBER'] ? true : false
   end
 
   def before_test(app_host:, driver: DEFAULT_DRIVER, browser: DEFAULT_BROWSER, wait_time: DEFAULT_WAIT_TIME)
@@ -53,8 +53,8 @@ class CapybaraHelper
 
     if headless_mode
       headless_params = {}
-      #headless_params[:display] = @parallel_tests_mode ? 100 + test_number : 1
-      #headless_params[:reuse] = @parallel_tests_mode ? true : false
+      headless_params[:display] = 100 + test_number
+      headless_params[:reuse] = parallel_tests_mode ? true : false
       headless_params[:dimensions] = "1280x900x24"
 
       headless_params[:video] = {
@@ -112,15 +112,17 @@ class CapybaraHelper
   end
 
   def take_screenshot
+    file_path = '/vagrant/screenshot.jpg'
+
     if headless_mode
-      #@headless.take_screenshot
+      @headless.take_screenshot file_path, {using: :imagemagick}
     end
   end
 
   private
 
   def test_number
-    @parallel_tests_mode ? + ENV['TEST_ENV_NUMBER'].to_i : 1
+    parallel_tests_mode ? ENV['TEST_ENV_NUMBER'].to_i : 1
   end
 
   def error_video_name name, exception
