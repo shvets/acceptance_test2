@@ -39,8 +39,8 @@ sudo apt-get install -y libffi-dev
 sudo apt-get install -y libgmp-dev
 
 # to support capybara-webkit
-sudo apt-get install -y libqt4-dev
 sudo apt-get install -y libqtwebkit-dev
+sudo apt-get install -y qt4-qmake
 
 # to support headless
 sudo apt-get install -y xvfb

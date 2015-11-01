@@ -5,14 +5,16 @@ require 'capybara/rspec'
 require 'capybara/dsl'
 
 require 'singleton'
+require 'file_utils'
 
 require 'acceptance_test/capybara/capybara_helper'
 
 class RspecHelper
   include Singleton
 
-  def configure(app_host:, driver: CapybaraHelper::DEFAULT_DRIVER, browser: CapybaraHelper::DEFAULT_BROWSER,
-                wait_time: CapybaraHelper::DEFAULT_WAIT_TIME)
+  def configure(app_host:, driver: CapybaraHelper::DEFAULT_DRIVER,
+                           browser: CapybaraHelper::DEFAULT_BROWSER,
+                           wait_time: CapybaraHelper::DEFAULT_WAIT_TIME)
     register_extensions
 
     RSpec.configure do |rspec_config|
@@ -25,8 +27,9 @@ class RspecHelper
   def create_shared_context(name)
     register_extensions
 
-    RSpec.shared_context name do |app_host:, driver: CapybaraHelper::DEFAULT_DRIVER, browser: CapybaraHelper::DEFAULT_BROWSER,
-        wait_time: CapybaraHelper::DEFAULT_WAIT_TIME|
+    RSpec.shared_context name do |app_host:, driver: CapybaraHelper::DEFAULT_DRIVER,
+                                             browser: CapybaraHelper::DEFAULT_BROWSER,
+                                             wait_time: CapybaraHelper::DEFAULT_WAIT_TIME|
       self.define_singleton_method(:include_context, lambda do
         params = {app_host: app_host, driver: driver, browser: browser, wait_time: wait_time}
 
@@ -37,8 +40,9 @@ class RspecHelper
     end
   end
 
-  def configure_rspec(rspec_config, app_host:, driver: CapybaraHelper::DEFAULT_DRIVER, browser: CapybaraHelper::DEFAULT_BROWSER,
-                      wait_time: CapybaraHelper::DEFAULT_WAIT_TIME)
+  def configure_rspec(rspec_config, app_host:, driver: CapybaraHelper::DEFAULT_DRIVER,
+                                               browser: CapybaraHelper::DEFAULT_BROWSER,
+                                               wait_time: CapybaraHelper::DEFAULT_WAIT_TIME)
     rspec_config.around(:each) do |example|
       params = {metadata: example.metadata, app_host: app_host, driver: driver, browser: browser, wait_time: wait_time}
 
@@ -71,19 +75,46 @@ class RspecHelper
   end
 
   def after_test(metadata: nil, exception: nil)
-    CapybaraHelper.instance.after_test name: File.basename(metadata[:file_path]), exception: exception
+    # selected_driver = RspecHelper.instance.get_driver(metadata, driver: nil)
+    #
+    # if selected_driver and exception and not [:webkit].include? selected_driver
+    #   path = build_screenshot_name 'screenshots', metadata[:file_path], metadata[:line_number]
+    #
+    #   Capybara.current_session.save_screenshot(path)
+    #
+    #   puts metadata[:full_description]
+    # end
 
-    #   driver = driver(example.metadata)
-    #
-    #   if driver and exception and page and not [:webkit].include? driver
-    #     screenshot_maker.basedir = File.expand_path(config[:screenshots_dir])
-    #
-    #     screenshot_maker.make page, example.metadata
-    #
-    #     puts example.metadata[:full_description]
-    #     puts "Screenshot: #{screenshot_maker.screenshot_url(example.metadata)}"
-    #   end
-    #
+    CapybaraHelper.instance.after_test name: File.basename(metadata[:file_path]), exception: exception
+  end
+
+  def build_screenshot_name basedir, file_path, line_number=nil
+    FileUtils.mkdir_p basedir unless File.exist? basedir
+
+    name = "#{build_name(file_path)}#{line_number ? '-'+line_number.to_s : ''}.png"
+
+    File.expand_path("#{basedir}/#{name}")
+  end
+
+  def build_name path
+    full_path = File.expand_path(path)
+
+    spec_index = full_path.index("/spec")
+
+    if spec_index
+      extension = File.extname(path)
+      ext_index = extension.size == 0 ? -1 : full_path.index(extension)-1
+
+      name = full_path[spec_index+1..ext_index].gsub("/", "_")
+
+      name = name[5..-1] if name =~ /^spec_/
+      name = name[9..-1] if name =~ /^features_/
+      name = name[11..-1] if name =~ /^acceptance_/
+    else
+      name = path
+    end
+
+    name
   end
 
   def register_extensions
@@ -96,12 +127,12 @@ class RspecHelper
       config.include Capybara::RSpecMatchers
       config.include Capybara::DSL
     end
-
-    # RSpec::Core::ExampleGroup.send :include, Capybara::DSL
   end
 
   def get_driver(metadata, driver:)
     driver_name = driver
+
+    driver_name = ENV['DRIVER'].nil? ? nil : ENV['DRIVER'].to_sym unless driver_name
 
     driver_name = metadata[:driver] unless driver_name
 
@@ -117,6 +148,8 @@ class RspecHelper
 
   def get_browser(metadata, browser:)
     browser_name = browser
+
+    browser_name = ENV['BROWSER'].nil? ? nil : ENV['BROWSER'].to_sym unless browser_name
 
     browser_name = metadata[:browser] unless browser_name
 

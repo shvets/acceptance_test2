@@ -61,7 +61,10 @@ class Project < Thor
   desc "exec", "Executes command on remote server"
   def exec *args
     if args
-      invoke :exec1, 'a'
+      ARGV << 'HEADLESS=1 rspec spec/unit/wikipedia_search_spec.rb:55'
+      p ARGV
+
+      invoke :exec1
       #system "ssh vagrant@22.22.22.22 \'cd /home/vagrant && source /usr/local/rvm/scripts/rvm && /usr/local/rvm/bin/rvm use @acceptance_test2 && #{args.join(' ')}\'"
     end
   end

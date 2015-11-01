@@ -10,7 +10,7 @@ RspecHelper.instance.create_shared_context "WikipediaSearch"
 RSpec.describe 'Wikipedia Search' do
   include_context "WikipediaSearch", config
 
-  it "searches on wikipedia web site" do
+  it "searches on wikipedia web site (selenium)" do
     expect(Capybara.current_driver).to equal(:selenium_chrome)
 
     visit('/')
@@ -33,7 +33,7 @@ RSpec.describe 'Wikipedia Search' do
       end
     end
 
-    it "searches on wikipedia web site", driver: :webkit do
+    it "searches on wikipedia web site (webkit)", driver: :webkit do
       puts "driver: #{Capybara.current_driver}"
       expect(Capybara.current_driver).to equal(:webkit)
 
@@ -47,9 +47,10 @@ RSpec.describe 'Wikipedia Search' do
     end
   end
 
-  it "searches on wikipedia web site", driver: :poltergeist do
-    unless Gem::Platform.local.os.to_sym == :darwin
-      puts "driver: #{Capybara.current_driver}"
+  it "searches on wikipedia web site (poltergeist)", driver: :poltergeist do
+    if Gem::Platform.local.os.to_sym == :darwin
+      puts "This OS: #{Gem::Platform.local.os} doesn't support phantomjs."
+    else
       expect(Capybara.current_driver).to equal(:poltergeist)
 
       visit('/')

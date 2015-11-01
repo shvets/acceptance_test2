@@ -54,6 +54,5 @@ source /usr/local/rvm/scripts/rvm
 
 rvm use #{project.ruby_version}@#{project.gemset}
 
-echo $1
 
-rspec spec/unit/wikipedia_search_spec.rb:55
+HEADLESS=1 rspec spec/unit/wikipedia_search_spec.rb:40
