@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #######################################
 # [chrome]
 
@@ -39,6 +41,22 @@ sudo apt-get install -y libav-tools
 # [firefox]
 
 sudo apt-get install -y firefox
+
+
+##############################
+# [phantomjs]
+
+#sudo apt-get install phantomjs
+
+cd /usr/local/share
+
+sudo wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+
+sudo tar xjf phantomjs-1.9.8-linux-x86_64.tar.bz2
+
+sudo ln -s /usr/local/share/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs
+sudo ln -s /usr/local/share/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+sudo ln -s /usr/local/share/phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 
 
 ##############################

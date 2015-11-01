@@ -27,6 +27,7 @@ group :capybara, :default do
   gem "capybara-extensions", "~> 0.4.1"
   gem "selenium-webdriver", "~> 2.47.1"
   gem "capybara-webkit", "~> 1.7.1"
+  gem "poltergeist", "~> 1.7"
 end
 
 group :rspec, :default do

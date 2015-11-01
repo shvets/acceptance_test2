@@ -1,6 +1,6 @@
 {
   "node": {
-    "domain": "22.22.22.22", // remote host, see "config.vm.synced_folder"
+    "domain": "22.22.22.22", // remote host
     "port": "22",            // default ssh port
     "user": "vagrant",       // vagrant user name
     "password": "vagrant",   // vagrant user password

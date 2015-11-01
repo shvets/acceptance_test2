@@ -33,7 +33,7 @@ class CapybaraHelper
   def before_test(app_host:, driver: DEFAULT_DRIVER, browser: DEFAULT_BROWSER, wait_time: DEFAULT_WAIT_TIME)
     @old_driver = Capybara.current_driver
 
-    driver_name = register_driver driver: driver, browser: browser, selenium_url: nil, capabilities: nil
+    driver_name = register_driver driver, browser: browser, selenium_url: nil, capabilities: nil
 
     use_driver(driver_name)
 
@@ -103,43 +103,13 @@ class CapybaraHelper
     end
   end
 
-  def take_screenshot
-    file_path = '/vagrant/screenshot.jpg'
-
-    if headless_mode
-      @headless.take_screenshot file_path, {using: :imagemagick}
-    end
-  end
-
-  private
-
-  def test_number
-    parallel_tests_mode ? ENV['TEST_ENV_NUMBER'].to_i : 1
-  end
-
-  def error_video_name name, exception
-    exception_name = exception ? exception.name : 'exception'
-
-    "#{exception_name}_#{name}.mp4"
-  end
-
-  def success_video_name name
-    "#{name}.mp4"
-  end
-
-  def headless_mode_not_supported
-    puts "Headless mode is not supported on this OS."
-  end
-
-  def register_driver driver:, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil
+  def register_driver driver, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil
     driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url)
 
     if driver == :selenium
       properties = {}
 
-      if not selenium_url
-        properties[:browser] = browser
-      else
+      if selenium_url
         properties[:browser] = :remote
         properties[:url] = selenium_url
 
@@ -168,20 +138,65 @@ class CapybaraHelper
             end
 
         properties[:desired_capabilities] = desired_capabilities if desired_capabilities
+      else
+        properties[:browser] = browser
       end
 
       Capybara.register_driver driver_name do |app|
         Capybara::Selenium::Driver.new(app, properties)
       end
+
+    elsif driver == :poltergeist
+      require 'capybara/poltergeist'
+
+      properties = {}
+      properties[:debug] = false
+
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, properties)
+      end
+
+    elsif driver == :webkit
+      require "capybara-webkit"
     end
 
     driver_name
+  end
+
+  def take_screenshot
+    file_path = '/vagrant/screenshot.jpg'
+
+    if headless_mode
+      @headless.take_screenshot file_path, {using: :imagemagick}
+    end
+  end
+
+  private
+
+  def test_number
+    parallel_tests_mode ? ENV['TEST_ENV_NUMBER'].to_i : 1
+  end
+
+  def error_video_name name, exception
+    exception_name = exception ? exception.name : 'exception'
+
+    "#{exception_name}_#{name}.mp4"
+  end
+
+  def success_video_name name
+    "#{name}.mp4"
+  end
+
+  def headless_mode_not_supported
+    puts "Headless mode is not supported on this OS."
   end
 
   def build_driver_name driver:, browser:, selenium_url: nil
     case driver
       when :webkit
         :webkit
+      when :poltergeist
+        :poltergeist
       when :selenium
         name = ""
         name += driver ? "#{driver}_" : "#{Capybara.default_driver}_"

@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/usr/bin/env bash
 
 #######################################
 # [ubuntu_update]
@@ -65,7 +64,9 @@ curl -sSL https://get.rvm.io | bash
 # [ruby]
 # Installs ruby
 
-/usr/local/rvm/bin/rvm install 2.2.3
+PATH=/usr/local/rvm/bin:$PATH
+
+rvm install 2.2.3
 
 
 #######################################

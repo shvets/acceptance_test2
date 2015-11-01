@@ -30,25 +30,40 @@ class Project < Thor
 
   desc "sys", "Installs system packages"
   def sys
-    invoke :prepare_linux
+    invoke :ubuntu_update
+    invoke :required_packages
+    invoke :gpg
+
     invoke :rvm
     invoke :ruby
+  end
 
-    #invoke :node
+  desc "extra", "Installs extra packages"
+  def extra
+    invoke :chrome
+    invoke :chromedriver
+    invoke :ffmpeg
+    invoke :firefox
+    invoke :phantomjs
 
-    invoke :prepare
+    # invoke :imagemagick
+    # invoke :apache
+    # invoke :node
+    # invoke :rbenv
   end
 
   desc "prg", "Installs project related packages"
   def prg
     invoke :init
     invoke :update
+  end
 
-    invoke :ffmpeg
-    invoke :firefox
-
-    invoke :chrome
-    invoke :chromedriver
+  desc "exec", "Executes command on remote server"
+  def exec *args
+    if args
+      invoke :exec1, 'a'
+      #system "ssh vagrant@22.22.22.22 \'cd /home/vagrant && source /usr/local/rvm/scripts/rvm && /usr/local/rvm/bin/rvm use @acceptance_test2 && #{args.join(' ')}\'"
+    end
   end
 
 end
