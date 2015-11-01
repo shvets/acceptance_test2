@@ -60,9 +60,6 @@ class RspecHelper
 
     CapybaraHelper.instance.before_test params
 
-    # puts "Using driver: #{Capybara.current_driver}."
-    # puts "Default wait time: #{Capybara.default_max_wait_time }."
-
     new_driver = Capybara.current_driver
 
     Capybara.current_session.instance_variable_set(:@mode, new_driver)
@@ -104,8 +101,6 @@ class RspecHelper
   end
 
   def get_driver(metadata, driver:)
-    #driver = ENV['DRIVER'].nil? ? nil : ENV['DRIVER'].to_sym
-
     driver_name = driver
 
     driver_name = metadata[:driver] unless driver_name
@@ -121,8 +116,6 @@ class RspecHelper
   end
 
   def get_browser(metadata, browser:)
-    #browser_name = ENV['BROWSER'].nil? ? nil : ENV['BROWSER'].to_sym
-
     browser_name = browser
 
     browser_name = metadata[:browser] unless browser_name

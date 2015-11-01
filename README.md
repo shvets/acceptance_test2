@@ -185,62 +185,6 @@ Feature: Using Wikipedia
     Then I should see "Capybara"
 ```
 
-
-
-
-# Without selenium configuration
-
-Your spec class:
-
-```ruby
-require 'acceptance_test'
-
-describe 'Google Search' do
-
-  include_context "AcceptanceTest"
-
-  before :all do
-    acceptance_test.app_host = "http://www.google.com"
-  end
-
-  it "uses selenium driver", driver: :selenium, exclude: false do
-    visit('/')
-
-    fill_in "q", :with => "Capybara"
-
-    #save_and_open_page
-
-    find("#gbqfbw button").click
-
-    all(:xpath, "//li[@class='g']/h3/a").each { |a| puts a[:href] }
-  end
-end
-```
-
-# With selenium configuration
-
-Your spec class:
-
-```ruby
-require 'acceptance_test'
-
-describe 'Google Search' do
-
-  include_context "AcceptanceTest"
-
-  before :all do
-    selenium_config_file = "spec/features/selenium.yml"
-    selenium_config_name = "test"
-
-    acceptance_test.load_selenium_config selenium_config_file, selenium_config_name
-  end
-
-  it "do something" do
-    # ...
-  end
-end
-```
-
 # Using Vagrant
 
 1. Install Virtual Box & Vagrant
@@ -254,12 +198,6 @@ brew cask install vagrant
 
 vagrant up
 
-3. Run docker container:
-
-vagrant docker-run default -- echo hi
-
-
-app -- rake db:migrate
 
 
     Capybara resources:

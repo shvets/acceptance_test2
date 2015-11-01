@@ -37,18 +37,12 @@ class CapybaraHelper
 
     use_driver(driver_name)
 
-    # driver_manager.setup_browser_binary config[:browser].to_sym, config[:browser_binaries]
-
     Capybara.app_host = app_host
 
     @old_default_max_wait_time = Capybara.default_max_wait_time
 
     Capybara.configure do |conf|
       conf.default_max_wait_time = wait_time
-
-      # conf.match = :first
-      #
-      # conf.ignore_hidden_elements = false
     end
 
     if headless_mode
@@ -71,8 +65,6 @@ class CapybaraHelper
         @headless = Headless.new headless_params
 
         @headless.start
-
-        #page.driver.browser.manage.window.resize_to(1280, 900)
 
         @headless.video.start_capture if video_mode
       rescue Headless::Exception
@@ -142,30 +134,6 @@ class CapybaraHelper
   def register_driver driver:, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil
     driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url)
 
-    # case driver
-    #   # when :poltergeist
-    #   #   require 'capybara/poltergeist'
-    #
-    #   when :webkit
-    #     require "capybara-webkit"
-    #
-    #   when :firefox_with_firebug
-    #     require 'capybara/firebug'
-    #
-    #   else
-    #     ;
-    # end
-
-    # if driver == :poltergeist
-    #   properties = {}
-    #   properties[:debug] = false
-    #
-    #   Capybara.register_driver :poltergeist do |app|
-    #     Capybara::Poltergeist::Driver.new(app, properties)
-    #   end
-    # elsif driver == :webkit
-    #   ;
-    # else
     if driver == :selenium
       properties = {}
 
@@ -214,8 +182,6 @@ class CapybaraHelper
     case driver
       when :webkit
         :webkit
-      # when :poltergeist
-      #   :poltergeist
       when :selenium
         name = ""
         name += driver ? "#{driver}_" : "#{Capybara.default_driver}_"
