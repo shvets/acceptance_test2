@@ -178,7 +178,7 @@ class CapybaraHelper
   end
 
   def error_video_name name, exception
-    exception_name = exception ? exception.name : 'exception'
+    exception_name = exception && exception.respond_to?(:name) ? exception.name : 'exception'
 
     "#{exception_name}_#{name}.mp4"
   end

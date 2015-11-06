@@ -50,8 +50,18 @@ class RspecHelper
 
       example.run
 
-      RspecHelper.instance.after_test metadata: example.metadata, exception: example.exception
+     RspecHelper.instance.after_test metadata: example.metadata, exception: example.exception
     end
+
+    # rspec_config.before do |example|
+    #   params = {metadata: example.metadata, app_host: app_host, driver: driver, browser: browser, wait_time: wait_time}
+    #
+    #   RspecHelper.instance.before_test params
+    # end
+
+    # rspec_config.after do |example|
+    #    RspecHelper.instance.after_test metadata: example.metadata, exception: example.exception
+    # end
   end
 
   def before_test metadata:, app_host:, driver:, browser:, wait_time:
@@ -75,15 +85,15 @@ class RspecHelper
   end
 
   def after_test(metadata: nil, exception: nil)
-    # selected_driver = RspecHelper.instance.get_driver(metadata, driver: nil)
-    #
-    # if selected_driver and exception and not [:webkit].include? selected_driver
-    #   path = build_screenshot_name 'screenshots', metadata[:file_path], metadata[:line_number]
-    #
-    #   Capybara.current_session.save_screenshot(path)
-    #
-    #   puts metadata[:full_description]
-    # end
+    selected_driver = RspecHelper.instance.get_driver(metadata, driver: nil)
+
+    if selected_driver and exception
+      path = build_screenshot_name 'screenshots', metadata[:file_path], metadata[:line_number]
+
+      Capybara.current_session.save_screenshot(path)
+
+      puts metadata[:description]
+    end
 
     CapybaraHelper.instance.after_test name: File.basename(metadata[:file_path]), exception: exception
   end

@@ -26,7 +26,7 @@ source /usr/local/rvm/scripts/rvm
 
 rvm use #{project.ruby_version}@#{project.gemset}
 
-bundle
+bundle update
 
 
 ##############################
@@ -42,11 +42,9 @@ rvm use #{project.ruby_version}@#{project.gemset}
 HEADLESS=1 VIDEO=1 rake
 
 
-#######################################
-# [exec1]
-
-PATH=/usr/local/bin:$PATH
-PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+##############################
+# [exec]
+# Executes arbitrary command
 
 cd #{project.home}
 
@@ -54,5 +52,4 @@ source /usr/local/rvm/scripts/rvm
 
 rvm use #{project.ruby_version}@#{project.gemset}
 
-
-HEADLESS=1 rspec spec/unit/wikipedia_search_spec.rb:40
+ #{ARGV}

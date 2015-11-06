@@ -5,7 +5,7 @@ require 'script_executor/base_provision'
 class Project < Thor
   include Executable
 
-   BaseProvision.new("thor/project.conf.json", [
+  BaseProvision.new("thor/project.conf.json", [
     "thor/system_provision.sh",
     "thor/extra_provision.sh",
     "thor/project_provision.sh"
@@ -56,17 +56,6 @@ class Project < Thor
   def prg
     invoke :init
     invoke :update
-  end
-
-  desc "exec", "Executes command on remote server"
-  def exec *args
-    if args
-      ARGV << 'HEADLESS=1 rspec spec/unit/wikipedia_search_spec.rb:55'
-      p ARGV
-
-      invoke :exec1
-      #system "ssh vagrant@22.22.22.22 \'cd /home/vagrant && source /usr/local/rvm/scripts/rvm && /usr/local/rvm/bin/rvm use @acceptance_test2 && #{args.join(' ')}\'"
-    end
   end
 
 end
