@@ -174,7 +174,7 @@ class RspecHelper
   end
 
   def supported_drivers
-    [:selenium, :webkit, :poltergeist]
+    [:selenium]
   end
 
   def supported_browsers

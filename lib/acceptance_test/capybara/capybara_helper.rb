@@ -146,18 +146,18 @@ class CapybaraHelper
         Capybara::Selenium::Driver.new(app, properties)
       end
 
-    elsif driver == :poltergeist
-      require 'capybara/poltergeist'
-
-      properties = {}
-      properties[:debug] = false
-
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, properties)
-      end
-
-    elsif driver == :webkit
-      require "capybara-webkit"
+    # elsif driver == :poltergeist
+    #   require 'capybara/poltergeist'
+    #
+    #   properties = {}
+    #   properties[:debug] = false
+    #
+    #   Capybara.register_driver :poltergeist do |app|
+    #     Capybara::Poltergeist::Driver.new(app, properties)
+    #   end
+    #
+    # elsif driver == :webkit
+    #   require "capybara-webkit"
     end
 
     driver_name
@@ -193,10 +193,10 @@ class CapybaraHelper
 
   def build_driver_name driver:, browser:, selenium_url: nil
     case driver
-      when :webkit
-        :webkit
-      when :poltergeist
-        :poltergeist
+      # when :webkit
+      #   :webkit
+      # when :poltergeist
+      #   :poltergeist
       when :selenium
         name = ""
         name += driver ? "#{driver}_" : "#{Capybara.default_driver}_"
