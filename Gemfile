@@ -39,15 +39,21 @@ group :capybara, :default do
   gem "capybara", "~> 2.7.1"
   gem "capybara-extensions", "~> 0.4.1"
   gem "selenium-webdriver", "~> 2.53.3"
-  # gem "capybara-webkit", "~> 1.7.1"
-  # gem "poltergeist", "~> 1.9.0"
 end
+
+# group :webkit do
+#   gem "capybara-webkit", "~> 1.7.1"
+# end
+#
+# group :poltergeist do
+#   gem "poltergeist", "~> 1.9.0"
+# end
 
 group :rspec, :default do
   gem "rspec", "~> 3.4.0"
 end
 
-# group :turnip, :default do
+# group :turnip do
 #   gem "turnip", "~> 2.1.1"
 #   gem "turnip_formatter", "~> 0.5.0"
 #   gem "gnawrnip", "~> 0.5.0"

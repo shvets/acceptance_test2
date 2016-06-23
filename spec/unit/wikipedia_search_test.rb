@@ -19,13 +19,11 @@ class WikipediaSearchTest < AcceptanceSpec
   end
 
   it "finding the information about capybara", js: true do
-    skip
-
     visit "/"
 
     fill_in "searchInput", :with => "capybara"
 
-    find(".formBtn", match: :first).click # submit
+    find(".pure-button", match: :first).click # submit
 
     page.must_have_content('capybara')
   end
