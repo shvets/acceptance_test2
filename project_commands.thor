@@ -1,14 +1,18 @@
-$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path("lib", File.dirname(__FILE__))
+
+require "thor"
 
 require 'script_executor/base_provision'
 
 class Project < Thor
   include Executable
 
-  BaseProvision.new("thor/project.conf.json", [
-    "thor/system_provision.sh",
-    "thor/extra_provision.sh",
-    "thor/project_provision.sh"
+  BaseProvision.new("provision/project.conf.json", [
+    "provision/system_provision.sh",
+    "provision/extra_provision.sh",
+    "provision/project_provision.sh"
   ]).create_thor_methods(self)
 
   desc "cp_key", "cp_key"
@@ -59,3 +63,8 @@ class Project < Thor
   end
 
 end
+
+if File.basename($0) != 'thor'
+  Project.start
+end
+

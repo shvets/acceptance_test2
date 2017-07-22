@@ -1,3 +1,9 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path("lib", File.dirname(__FILE__))
+
+require "thor"
+
 require "highline/import"
 require 'script_executor/executable'
 require 'script_executor/script_locator'
@@ -25,6 +31,10 @@ class Ssh < Thor
       evaluate_script_body(scripts[:cp_key2][:code], binding)
     end
   end
+end
+
+if File.basename($0) != 'thor'
+  Ssh.start
 end
 
 __END__
