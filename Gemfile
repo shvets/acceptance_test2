@@ -3,10 +3,11 @@ source 'https://rubygems.org'
 group :development do
   gem 'gemspec_deps_gen'
   gem 'gemcutter'
+  gem 'thor', '0.19.1'
+  gem 'pry'
 end
 
 group(:default) {
-  gem 'thor', '0.19.1'
   gem 'script_executor', '1.7.7'
   gem 'parallel_tests', '2.6.0'
 
@@ -41,12 +42,17 @@ group :capybara, :default do
   gem 'selenium-webdriver'
 end
 
+group :chrome_headless do
+  gem 'capybara-selenium'
+  gem 'chromedriver-helper'
+end
+
 # group :webkit do
-#   gem "capybara-webkit", "1.7.1"
+#   gem "capybara-webkit"
 # end
-#
+
 # group :poltergeist do
-#   gem "poltergeist", "1.9.0"
+#   gem "poltergeist"
 # end
 
 group :rspec, :default do

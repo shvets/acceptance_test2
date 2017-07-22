@@ -12,6 +12,7 @@ class CapybaraHelper
 
   def initialize
     Capybara.run_server = false
+    Capybara.app = nil
 
     if ENV['HEADLESS']
       begin
@@ -107,7 +108,10 @@ class CapybaraHelper
     driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url)
 
     if driver == :selenium
-      properties = {}
+      properties = {
+          # clear_local_storage: true,
+          # clear_session_storage: true
+      }
 
       if selenium_url
         properties[:browser] = :remote

@@ -1,6 +1,6 @@
 require_relative '../minitest_helper'
 
-class WikipediaSearchTest < AcceptanceSpec
+class WikipediaSearchTest < MinitestSpec
 
   Minitest::Spec.spec_type "Wikipedia Search", %q{
     As a visitor

@@ -1,7 +1,7 @@
 require 'minitest/spec'
 require 'capybara'
 
-class AcceptanceSpec < MiniTest::Spec
+class MinitestSpec < MiniTest::Spec
   include Capybara::DSL
   include Capybara::Assertions
 

@@ -12,7 +12,7 @@ steps_for :search_with_drivers do
   end
 
   step "I submit request" do
-    find(".formBtn", match: :first).click
+    find(".sprite-icons-search-icon", match: :first).click
   end
 
 end

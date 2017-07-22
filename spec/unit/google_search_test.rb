@@ -1,6 +1,6 @@
 require_relative '../minitest_helper'
 
-class GoogleSearchTest < AcceptanceSpec
+class GoogleSearchTest < MinitestSpec
 
   Minitest::Spec.spec_type "Google Search", %q{
     As a visitor

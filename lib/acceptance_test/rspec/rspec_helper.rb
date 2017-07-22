@@ -4,6 +4,8 @@ require 'rspec/expectations'
 require 'capybara/rspec'
 require 'capybara/dsl'
 
+#require 'pry'
+
 require 'singleton'
 require 'file_utils'
 
@@ -48,7 +50,11 @@ class RspecHelper
 
       RspecHelper.instance.before_test params
 
+      #mode = Capybara.current_session.mode
+
       example.run
+
+      #Capybara.current_session.instance_variable_set(:@mode, mode)
 
      RspecHelper.instance.after_test metadata: example.metadata, exception: example.exception
     end
