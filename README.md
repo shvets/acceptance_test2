@@ -1,4 +1,4 @@
-# AcceptanceTest 2 - Gem that simplifies configuration and running of acceptance tests
+# AcceptanceTest v. 2 - Gem that simplifies configuration and running of acceptance tests
 
 ## Installation
 

@@ -16,10 +16,10 @@ group(:default) {
 }
 
 group :minitest, :default do
-  gem 'minitest', '5.9.0'
-  gem 'minitest-capybara', '0.8.2'
-  gem 'minitest-metadata', '0.6.0'
-  gem 'minitest-reporters', '1.1.9'
+  gem 'minitest'
+  gem 'minitest-capybara'
+  gem 'minitest-metadata'
+  gem 'minitest-reporters'
 end
 
 # Note: for capybara-webkit you need to install qt first:
@@ -36,9 +36,9 @@ end
 # brew install phantomjs
 
 group :capybara, :default do
-  gem 'capybara', '2.7.1'
-  gem 'capybara-extensions', '0.4.1'
-  gem 'selenium-webdriver', '2.53.3'
+  gem 'capybara'
+  gem 'capybara-extensions'
+  gem 'selenium-webdriver'
 end
 
 # group :webkit do
@@ -50,12 +50,11 @@ end
 # end
 
 group :rspec, :default do
-  gem 'rspec', '3.4.0'
+  gem 'rspec'
 end
 
-# group :turnip do
-#   gem "turnip", "~> 2.1.1"
-#   gem "turnip_formatter", "~> 0.5.0"
-#   gem "gnawrnip", "~> 0.5.0"
-#   #gem "turnip", :git => 'https://github.com/jnicklas/turnip.git', :branch => '2_0_0_rc1'
-# end
+group :turnip do
+  gem "turnip"
+  gem "turnip_formatter"
+  gem "gnawrnip"
+end
