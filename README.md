@@ -206,6 +206,7 @@ https://github.com/wojtekmach/minitest-capybara
 https://dockyard.com/blog/2013/11/11/capybara-extensions
 http://www.elabs.se/blog/51-simple-tricks-to-clean-up-your-capybara-tests
 https://robots.thoughtbot.com/write-reliable-asynchronous-integration-tests-with-capybara
+https://robots.thoughtbot.com/headless-feature-specs-with-chrome
 
 https://gist.github.com/MicahElliott/2407918
 

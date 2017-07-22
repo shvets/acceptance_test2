@@ -1,28 +1,11 @@
 require_relative '../rspec_helper'
 
-config = {app_host: "http://wikipedia.org", wait_time: 15, driver: :headless_chrome}
+config = {app_host: "http://wikipedia.org", wait_time: 15, driver: :selenium, headless: true}
 
 # CapybaraHelper.instance.register_driver(:webkit)
 # CapybaraHelper.instance.register_driver(:poltergeist)
 
 require "selenium/webdriver"
-
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
-end
-
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: { args: %w(headless disable-gpu) }
-  )
-
-  Capybara::Selenium::Driver.new app,
-                                 browser: :chrome,
-                                 desired_capabilities: capabilities
-end
-
-Capybara.javascript_driver = :headless_chrome
-Capybara.current_driver = :headless_chrome
 
 RspecHelper.instance.create_shared_context "WikipediaSearch"
 
@@ -31,7 +14,10 @@ RSpec.describe 'Wikipedia Search' do
 
   it "searches on wikipedia web site (selenium)" do
     puts Capybara.current_driver
-    #expect(Capybara.current_driver).to equal(:selenium_chrome)
+    #puts page.driver.headless_chrome?
+
+    # expect(Capybara.current_driver).to equal(:selenium_chrome)
+    expect(Capybara.current_driver).to equal(:selenium_chrome_headless)
 
     visit('/')
 

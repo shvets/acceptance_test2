@@ -31,10 +31,10 @@ class CapybaraHelper
     @parallel_tests_mode = ENV['TEST_ENV_NUMBER'] ? true : false
   end
 
-  def before_test(app_host:, driver: DEFAULT_DRIVER, browser: DEFAULT_BROWSER, wait_time: DEFAULT_WAIT_TIME)
+  def before_test(app_host:, driver: DEFAULT_DRIVER, browser: DEFAULT_BROWSER, wait_time: DEFAULT_WAIT_TIME, headless: false)
     @old_driver = Capybara.current_driver
 
-    driver_name = register_driver driver, browser: browser, selenium_url: nil, capabilities: nil
+    driver_name = register_driver driver, browser: browser, selenium_url: nil, capabilities: nil, headless: headless
 
     use_driver(driver_name)
 
@@ -104,8 +104,8 @@ class CapybaraHelper
     end
   end
 
-  def register_driver driver, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil
-    driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url)
+  def register_driver driver, browser: DEFAULT_BROWSER, selenium_url: nil, capabilities: nil, headless: false
+    driver_name = build_driver_name(driver: driver, browser: browser, selenium_url: selenium_url, headless: headless)
 
     if driver == :selenium
       properties = {
@@ -146,8 +146,22 @@ class CapybaraHelper
         properties[:browser] = browser
       end
 
+      desired_capabilities = nil
+
+      if headless
+        desired_capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+            chromeOptions: {
+                args: %w[ no-sandbox headless disable-gpu ]
+            }
+        )
+      end
+
       Capybara.register_driver driver_name do |app|
-        Capybara::Selenium::Driver.new(app, properties)
+        if desired_capabilities
+          Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: desired_capabilities)
+        else
+          Capybara::Selenium::Driver.new(app, properties)
+        end
       end
 
     # elsif driver == :poltergeist
@@ -195,7 +209,7 @@ class CapybaraHelper
     puts "Headless mode is not supported on this OS."
   end
 
-  def build_driver_name driver:, browser:, selenium_url: nil
+  def build_driver_name driver:, browser:, selenium_url: nil, headless: false
     case driver
       # when :webkit
       #   :webkit
@@ -206,6 +220,7 @@ class CapybaraHelper
         name += driver ? "#{driver}_" : "#{Capybara.default_driver}_"
 
         name += "#{browser}_" if browser
+        name += "headless_" if headless
         name += "remote" if selenium_url
         name = name[0..name.size-2] if name[name.size-1] == "_"
 

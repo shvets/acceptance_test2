@@ -31,9 +31,10 @@ class RspecHelper
 
     RSpec.shared_context name do |app_host:, driver: CapybaraHelper::DEFAULT_DRIVER,
                                              browser: CapybaraHelper::DEFAULT_BROWSER,
-                                             wait_time: CapybaraHelper::DEFAULT_WAIT_TIME|
+                                             wait_time: CapybaraHelper::DEFAULT_WAIT_TIME,
+                                             headless: false|
       self.define_singleton_method(:include_context, lambda do
-        params = {app_host: app_host, driver: driver, browser: browser, wait_time: wait_time}
+        params = {app_host: app_host, driver: driver, browser: browser, wait_time: wait_time, headless: headless}
 
         RspecHelper.instance.configure_rspec self, params
       end)
@@ -44,9 +45,11 @@ class RspecHelper
 
   def configure_rspec(rspec_config, app_host:, driver: CapybaraHelper::DEFAULT_DRIVER,
                                                browser: CapybaraHelper::DEFAULT_BROWSER,
-                                               wait_time: CapybaraHelper::DEFAULT_WAIT_TIME)
+                                               wait_time: CapybaraHelper::DEFAULT_WAIT_TIME,
+                                               headless: false)
     rspec_config.around(:each) do |example|
-      params = {metadata: example.metadata, app_host: app_host, driver: driver, browser: browser, wait_time: wait_time}
+      params = {metadata: example.metadata, app_host: app_host, driver: driver, browser: browser, wait_time: wait_time,
+                headless: headless}
 
       RspecHelper.instance.before_test params
 
@@ -70,13 +73,13 @@ class RspecHelper
     # end
   end
 
-  def before_test metadata:, app_host:, driver:, browser:, wait_time:
+  def before_test metadata:, app_host:, driver:, browser:, wait_time:, headless:
     old_driver = Capybara.current_driver
 
     selected_driver = RspecHelper.instance.get_driver(metadata, driver: driver)
     selected_browser = RspecHelper.instance.get_browser(metadata, browser: browser)
 
-    params = {app_host: app_host, driver: selected_driver, browser: selected_browser, wait_time: wait_time}
+    params = {app_host: app_host, driver: selected_driver, browser: selected_browser, wait_time: wait_time, headless: headless}
 
     CapybaraHelper.instance.before_test params
 
