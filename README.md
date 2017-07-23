@@ -187,12 +187,7 @@ Feature: Using Wikipedia
 
 # Using Vagrant
 
-1. Install Virtual Box & Vagrant
-
-brew install caskroom/cask/brew-cask
-
-brew cask install virtualbox
-brew cask install vagrant
+1. Install Virtual Box & Vagrant from executables
 
 2. Start Vagrant
 

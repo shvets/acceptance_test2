@@ -66,7 +66,7 @@ curl -sSL https://get.rvm.io | bash
 
 PATH=/usr/local/rvm/bin:$PATH
 
-rvm install 2.2.3
+rvm install 2.4.1
 
 
 #######################################

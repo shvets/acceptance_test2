@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
-  config.vm.box = "ubuntu/vivid64"
+  config.vm.box = "hashicorp/precise64"
   # config.vm.box = "package.box"
 
   config.vm.network "private_network", ip: "22.22.22.22"
@@ -78,6 +78,6 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
-  config.vm.provision :shell, path: "thor/system_provision.sh"
+  config.vm.provision :shell, path: "provision/system_provision.sh"
 
 end
